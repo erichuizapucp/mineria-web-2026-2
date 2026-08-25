@@ -263,6 +263,12 @@ async function mapOrdenesFromRows(rows: OrdenRow[]): Promise<Orden[]> {
   });
 }
 
+export async function getOrdenesIds(): Promise<number[]> {
+  const db = await getDb();
+  const rows = await db.all<Array<{ id: number }>>("SELECT id FROM ordenes ORDER BY id DESC");
+  return rows.map((row) => row.id);
+}
+
 export async function listarPedidosPaginado(
   pageParam: number,
   pageSize = 10,
