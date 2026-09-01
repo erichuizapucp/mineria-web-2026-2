@@ -93,3 +93,42 @@ CREATE INDEX IF NOT EXISTS idx_ordenes_fecha ON ordenes(fecha);
 CREATE INDEX IF NOT EXISTS idx_comentarios_tipo ON comentarios(tipo);
 CREATE INDEX IF NOT EXISTS idx_comentarios_producto ON comentarios(producto_id);
 CREATE INDEX IF NOT EXISTS idx_comentarios_cliente ON comentarios(cliente_id);
+
+-- ---------------------------------------------------------------------------
+-- Auth / seguridad de las APIs (REST + GraphQL). Ver lib/auth/*.
+-- Estas tablas se re-siembran en cada arranque (SQLite en memoria) desde
+-- variables de entorno; ver seedAuthData() en lib/db/seed.ts.
+-- ---------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS usuarios (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  email TEXT NOT NULL UNIQUE,
+  nombre TEXT NOT NULL,
+  password_hash TEXT NOT NULL,
+  password_salt TEXT NOT NULL,
+  rol TEXT NOT NULL DEFAULT 'admin'
+);
+
+CREATE TABLE IF NOT EXISTS api_keys (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  nombre TEXT NOT NULL,
+  key_prefix TEXT NOT NULL,
+  key_hash TEXT NOT NULL UNIQUE,
+  scopes TEXT NOT NULL DEFAULT 'read write',
+  revocada INTEGER NOT NULL DEFAULT 0,
+  creada_en TEXT NOT NULL,
+  ultimo_uso_en TEXT
+);
+
+CREATE TABLE IF NOT EXISTS oauth_clients (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  client_id TEXT NOT NULL UNIQUE,
+  client_secret_hash TEXT NOT NULL,
+  client_secret_salt TEXT NOT NULL,
+  nombre TEXT NOT NULL,
+  scopes TEXT NOT NULL DEFAULT 'read write',
+  creado_en TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_api_keys_hash ON api_keys(key_hash);
+CREATE INDEX IF NOT EXISTS idx_oauth_clients_client_id ON oauth_clients(client_id);

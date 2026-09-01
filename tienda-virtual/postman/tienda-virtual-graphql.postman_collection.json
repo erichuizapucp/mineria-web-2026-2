@@ -1,0 +1,593 @@
+{
+  "info": {
+    "name": "Tienda Virtual - GraphQL API",
+    "description": "GraphQL API de la Tienda Virtual (solo lectura, pensado para scraping).\n\nEndpoint unico: `POST {{baseUrl}}/api/graphql` (GraphiQL disponible abriendo esa URL en el navegador).\n\nAutenticacion: igual que el REST. Por defecto la coleccion usa API key en el header `x-api-key` (`{{apiKey}}`). Para probar con OAuth ejecuta `OAuth / Obtener access token` y usa el request `(via OAuth Bearer)`.\n\nImporta el environment `tienda-virtual.postman_environment.json` y selecciona \"Tienda Virtual - Local\". Arranca el servidor con `npm run dev`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      { "key": "key", "value": "x-api-key", "type": "string" },
+      { "key": "value", "value": "{{apiKey}}", "type": "string" },
+      { "key": "in", "value": "header", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "productoId", "value": "1" },
+    { "key": "clienteId", "value": "1" },
+    { "key": "ordenId", "value": "1" },
+    { "key": "pageSize", "value": "50" },
+    { "key": "pgProductos", "value": "1" },
+    { "key": "pgClientes", "value": "1" },
+    { "key": "pgOrdenes", "value": "1" },
+    { "key": "pgTestimonios", "value": "1" },
+    { "key": "productosAll", "value": "[]" },
+    { "key": "clientesAll", "value": "[]" },
+    { "key": "ordenesAll", "value": "[]" },
+    { "key": "testimoniosAll", "value": "[]" }
+  ],
+  "item": [
+    {
+      "name": "OAuth",
+      "item": [
+        {
+          "name": "POST Obtener access token (client_credentials)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/x-www-form-urlencoded" }],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "grant_type", "value": "client_credentials" },
+                { "key": "client_id", "value": "{{oauthClientId}}" },
+                { "key": "client_secret", "value": "{{oauthClientSecret}}" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/oauth/token",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "oauth", "token"]
+            },
+            "description": "Guarda `access_token` en `{{accessToken}}` para los requests via Bearer."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('access_token presente', () => pm.expect(json.access_token).to.be.a('string'));",
+                  "if (json.access_token) pm.environment.set('accessToken', json.access_token);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Queries",
+      "item": [
+        {
+          "name": "Productos con rating agregado",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query Productos($page: Int, $pageSize: Int) {\n  productos(page: $page, pageSize: $pageSize) {\n    items {\n      id\n      codigo\n      nombre\n      precio\n      stock\n      categoria\n      subcategoria\n      aggregateRating { ratingValue reviewCount }\n    }\n    pageInfo { page pageSize total totalPages }\n  }\n}",
+                "variables": "{\n  \"page\": 1,\n  \"pageSize\": 10\n}"
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/graphql",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "graphql"]
+            },
+            "description": "Equivale al scraping de `b_productos_sitemap.ipynb`."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('sin errors', () => pm.expect(pm.response.json().errors).to.be.undefined);",
+                  "pm.test('trae productos', () => pm.expect(pm.response.json().data.productos.items).to.be.an('array'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Producto por id (especificaciones + resenas)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query Producto($id: Int!) {\n  producto(id: $id) {\n    id\n    nombre\n    descripcion\n    precio\n    stock\n    especificaciones { clave valor orden }\n    aggregateRating { ratingValue reviewCount }\n    resenas { id clienteNombre clienteApellidos calificacion texto fecha }\n  }\n}",
+                "variables": "{\n  \"id\": {{productoId}}\n}"
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/graphql",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "graphql"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('sin errors', () => pm.expect(pm.response.json().errors).to.be.undefined);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Clientes",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query Clientes($page: Int, $pageSize: Int) {\n  clientes(page: $page, pageSize: $pageSize) {\n    items { id dni nombre apellidos email ciudad pais fechaRegistro }\n    pageInfo { total totalPages }\n  }\n}",
+                "variables": "{\n  \"page\": 1,\n  \"pageSize\": 20\n}"
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/graphql",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "graphql"]
+            },
+            "description": "Equivale al scraping de `c_clientes_sitemap.ipynb`."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('sin errors', () => pm.expect(pm.response.json().errors).to.be.undefined);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Cliente por id",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query Cliente($id: Int!) {\n  cliente(id: $id) { id dni nombre apellidos email ciudad pais fechaRegistro }\n}",
+                "variables": "{\n  \"id\": {{clienteId}}\n}"
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/graphql",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "graphql"]
+            }
+          }
+        },
+        {
+          "name": "Ordenes (con cliente e items)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query Ordenes($page: Int, $pageSize: Int, $fecha: String, $clienteId: Int) {\n  ordenes(page: $page, pageSize: $pageSize, fecha: $fecha, clienteId: $clienteId) {\n    items {\n      id\n      numero\n      fecha\n      subTotal\n      igv\n      total\n      cliente { id nombre apellidos ciudad pais }\n      items { productoId cantidad subTotal producto { nombre categoria } }\n    }\n    pageInfo { total totalPages }\n  }\n}",
+                "variables": "{\n  \"page\": 1,\n  \"pageSize\": 5\n}"
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/graphql",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "graphql"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('sin errors', () => pm.expect(pm.response.json().errors).to.be.undefined);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Orden por id",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query Orden($id: Int!) {\n  orden(id: $id) {\n    id\n    numero\n    fecha\n    total\n    cliente { nombre apellidos }\n    items { productoId cantidad subTotal }\n  }\n}",
+                "variables": "{\n  \"id\": {{ordenId}}\n}"
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/graphql",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "graphql"]
+            }
+          }
+        },
+        {
+          "name": "Testimonios (comentarios cliente_general)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query Testimonios {\n  comentarios(tipo: \"cliente_general\") {\n    id\n    clienteId\n    clienteNombre\n    clienteApellidos\n    calificacion\n    texto\n    fecha\n  }\n}",
+                "variables": "{}"
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/graphql",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "graphql"]
+            },
+            "description": "Equivale al scraping de `d_comentarios_beautifulsoup.ipynb`."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('sin errors', () => pm.expect(pm.response.json().errors).to.be.undefined);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Resenas de entrega (comentarios post_compra)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query ResenasEntrega($ordenId: Int) {\n  comentarios(tipo: \"post_compra\", ordenId: $ordenId) {\n    id\n    clienteId\n    productoId\n    ordenId\n    calificacion\n    texto\n    fecha\n  }\n}",
+                "variables": "{\n  \"ordenId\": {{ordenId}}\n}"
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/graphql",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "graphql"]
+            },
+            "description": "Equivale al scraping de `e_resenas_entrega_playwright.ipynb`. Quita `ordenId` de variables para traer todas."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Listados completos (auto-paginado)",
+      "description": "Recorre TODAS las paginas de cada listado y acumula los resultados en una variable de coleccion (`productosAll`, `clientesAll`, `ordenesAll`, `testimoniosAll`).\n\nEjecuta desde **Collection Runner** o **newman** (el auto-avance con `setNextRequest` no ocurre en un solo Send). Ajusta `pageSize` (variable de coleccion, por defecto 50). Al terminar valida el conteo contra `pageInfo.total` y lo imprime en consola.",
+      "item": [
+        {
+          "name": "Todos los productos",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!Number(pm.collectionVariables.get('pgProductos'))) pm.collectionVariables.set('pgProductos', 1);",
+                  "if (Number(pm.collectionVariables.get('pgProductos')) === 1) pm.collectionVariables.set('productosAll', '[]');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const j = pm.response.json();",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('sin errors', () => pm.expect(j.errors).to.be.undefined);",
+                  "const d = j.data.productos;",
+                  "const acc = JSON.parse(pm.collectionVariables.get('productosAll') || '[]');",
+                  "acc.push(...d.items);",
+                  "pm.collectionVariables.set('productosAll', JSON.stringify(acc));",
+                  "const { page, totalPages, total } = d.pageInfo;",
+                  "console.log('productos: pagina ' + page + '/' + totalPages + ' -> acumulados ' + acc.length + '/' + total);",
+                  "if (page < totalPages) {",
+                  "  pm.collectionVariables.set('pgProductos', page + 1);",
+                  "  postman.setNextRequest(pm.info.requestName);",
+                  "} else {",
+                  "  pm.collectionVariables.set('pgProductos', 1);",
+                  "  pm.test('acumulados todos (' + acc.length + ')', () => pm.expect(acc.length).to.eql(total));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query Todos($page: Int, $pageSize: Int) {\n  productos(page: $page, pageSize: $pageSize) {\n    items { id codigo nombre precio stock categoria subcategoria aggregateRating { ratingValue reviewCount } }\n    pageInfo { page pageSize total totalPages }\n  }\n}",
+                "variables": "{\n  \"page\": {{pgProductos}},\n  \"pageSize\": {{pageSize}}\n}"
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/graphql",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "graphql"]
+            }
+          }
+        },
+        {
+          "name": "Todos los clientes",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!Number(pm.collectionVariables.get('pgClientes'))) pm.collectionVariables.set('pgClientes', 1);",
+                  "if (Number(pm.collectionVariables.get('pgClientes')) === 1) pm.collectionVariables.set('clientesAll', '[]');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const j = pm.response.json();",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('sin errors', () => pm.expect(j.errors).to.be.undefined);",
+                  "const d = j.data.clientes;",
+                  "const acc = JSON.parse(pm.collectionVariables.get('clientesAll') || '[]');",
+                  "acc.push(...d.items);",
+                  "pm.collectionVariables.set('clientesAll', JSON.stringify(acc));",
+                  "const { page, totalPages, total } = d.pageInfo;",
+                  "console.log('clientes: pagina ' + page + '/' + totalPages + ' -> acumulados ' + acc.length + '/' + total);",
+                  "if (page < totalPages) {",
+                  "  pm.collectionVariables.set('pgClientes', page + 1);",
+                  "  postman.setNextRequest(pm.info.requestName);",
+                  "} else {",
+                  "  pm.collectionVariables.set('pgClientes', 1);",
+                  "  pm.test('acumulados todos (' + acc.length + ')', () => pm.expect(acc.length).to.eql(total));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query Todos($page: Int, $pageSize: Int) {\n  clientes(page: $page, pageSize: $pageSize) {\n    items { id dni nombre apellidos email ciudad pais fechaRegistro }\n    pageInfo { page pageSize total totalPages }\n  }\n}",
+                "variables": "{\n  \"page\": {{pgClientes}},\n  \"pageSize\": {{pageSize}}\n}"
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/graphql",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "graphql"]
+            }
+          }
+        },
+        {
+          "name": "Todas las ordenes",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!Number(pm.collectionVariables.get('pgOrdenes'))) pm.collectionVariables.set('pgOrdenes', 1);",
+                  "if (Number(pm.collectionVariables.get('pgOrdenes')) === 1) pm.collectionVariables.set('ordenesAll', '[]');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const j = pm.response.json();",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('sin errors', () => pm.expect(j.errors).to.be.undefined);",
+                  "const d = j.data.ordenes;",
+                  "const acc = JSON.parse(pm.collectionVariables.get('ordenesAll') || '[]');",
+                  "acc.push(...d.items);",
+                  "pm.collectionVariables.set('ordenesAll', JSON.stringify(acc));",
+                  "const { page, totalPages, total } = d.pageInfo;",
+                  "console.log('ordenes: pagina ' + page + '/' + totalPages + ' -> acumulados ' + acc.length + '/' + total);",
+                  "if (page < totalPages) {",
+                  "  pm.collectionVariables.set('pgOrdenes', page + 1);",
+                  "  postman.setNextRequest(pm.info.requestName);",
+                  "} else {",
+                  "  pm.collectionVariables.set('pgOrdenes', 1);",
+                  "  pm.test('acumulados todos (' + acc.length + ')', () => pm.expect(acc.length).to.eql(total));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query Todos($page: Int, $pageSize: Int) {\n  ordenes(page: $page, pageSize: $pageSize) {\n    items {\n      id numero fecha subTotal igv total\n      cliente { id nombre apellidos ciudad pais }\n      items { productoId cantidad subTotal }\n    }\n    pageInfo { page pageSize total totalPages }\n  }\n}",
+                "variables": "{\n  \"page\": {{pgOrdenes}},\n  \"pageSize\": {{pageSize}}\n}"
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/graphql",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "graphql"]
+            }
+          }
+        },
+        {
+          "name": "Todos los testimonios",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!Number(pm.collectionVariables.get('pgTestimonios'))) pm.collectionVariables.set('pgTestimonios', 1);",
+                  "if (Number(pm.collectionVariables.get('pgTestimonios')) === 1) pm.collectionVariables.set('testimoniosAll', '[]');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const j = pm.response.json();",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('sin errors', () => pm.expect(j.errors).to.be.undefined);",
+                  "const d = j.data.testimonios;",
+                  "const acc = JSON.parse(pm.collectionVariables.get('testimoniosAll') || '[]');",
+                  "acc.push(...d.items);",
+                  "pm.collectionVariables.set('testimoniosAll', JSON.stringify(acc));",
+                  "const { page, totalPages, total } = d.pageInfo;",
+                  "console.log('testimonios: pagina ' + page + '/' + totalPages + ' -> acumulados ' + acc.length + '/' + total);",
+                  "if (page < totalPages) {",
+                  "  pm.collectionVariables.set('pgTestimonios', page + 1);",
+                  "  postman.setNextRequest(pm.info.requestName);",
+                  "} else {",
+                  "  pm.collectionVariables.set('pgTestimonios', 1);",
+                  "  pm.test('acumulados todos (' + acc.length + ')', () => pm.expect(acc.length).to.eql(total));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query Todos($page: Int, $pageSize: Int) {\n  testimonios(page: $page, pageSize: $pageSize) {\n    items { id clienteId clienteNombre clienteApellidos clienteCiudad clientePais calificacion texto fecha }\n    pageInfo { page pageSize total totalPages }\n  }\n}",
+                "variables": "{\n  \"page\": {{pgTestimonios}},\n  \"pageSize\": {{pageSize}}\n}"
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/graphql",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "graphql"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth alternativa / errores",
+      "item": [
+        {
+          "name": "Productos (via OAuth Bearer)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{accessToken}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "{ productos(page: 1, pageSize: 5) { items { id nombre precio } pageInfo { totalPages } } }",
+                "variables": "{}"
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/graphql",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "graphql"]
+            },
+            "description": "Ejecuta antes `OAuth / Obtener access token`."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('sin errors', () => pm.expect(pm.response.json().errors).to.be.undefined);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Sin autenticacion (401 UNAUTHENTICATED)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "{ productos(page: 1) { pageInfo { total } } }",
+                "variables": "{}"
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/graphql",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "graphql"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 401', () => pm.response.to.have.status(401));",
+                  "pm.test('code UNAUTHENTICATED', () => pm.expect(pm.response.json().errors[0].extensions.code).to.eql('UNAUTHENTICATED'));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,89 @@
 import { getDb } from "@/lib/db/client";
 import { calcularPagina, ResultadoPaginado } from "@/lib/api/pagination";
 
+export type TipoComentarioFiltro = "producto" | "cliente_general" | "post_compra";
+
+export interface ComentarioApi {
+  id: number;
+  tipo: TipoComentarioFiltro;
+  clienteId: number;
+  clienteNombre: string;
+  clienteApellidos: string;
+  productoId: number | null;
+  ordenId: number | null;
+  calificacion: number;
+  texto: string;
+  fecha: string;
+}
+
+interface ComentarioApiRow {
+  id: number;
+  tipo: TipoComentarioFiltro;
+  cliente_id: number;
+  cliente_nombre: string;
+  cliente_apellidos: string;
+  producto_id: number | null;
+  orden_id: number | null;
+  calificacion: number;
+  texto_comentario: string;
+  fecha_comentario: string;
+}
+
+/**
+ * Listado unificado de comentarios con filtros opcionales. Lo usan tanto el
+ * REST API (`GET /api/comentarios`) como el GraphQL API (`comentarios`).
+ */
+export async function getComentarios(filtro: {
+  tipo?: TipoComentarioFiltro;
+  productoId?: number;
+  ordenId?: number;
+  clienteId?: number;
+}): Promise<ComentarioApi[]> {
+  const db = await getDb();
+  const condiciones: string[] = [];
+  const params: Array<string | number> = [];
+
+  if (filtro.tipo) {
+    condiciones.push("c.tipo = ?");
+    params.push(filtro.tipo);
+  }
+  if (filtro.productoId !== undefined) {
+    condiciones.push("c.producto_id = ?");
+    params.push(filtro.productoId);
+  }
+  if (filtro.ordenId !== undefined) {
+    condiciones.push("c.orden_id = ?");
+    params.push(filtro.ordenId);
+  }
+  if (filtro.clienteId !== undefined) {
+    condiciones.push("c.cliente_id = ?");
+    params.push(filtro.clienteId);
+  }
+
+  const where = condiciones.length ? ` WHERE ${condiciones.join(" AND ")}` : "";
+  const rows = await db.all<ComentarioApiRow[]>(
+    `SELECT c.id, c.tipo, c.cliente_id, cl.nombre AS cliente_nombre, cl.apellidos AS cliente_apellidos,
+            c.producto_id, c.orden_id, c.calificacion, c.texto_comentario, c.fecha_comentario
+     FROM comentarios c
+     INNER JOIN clientes cl ON cl.id = c.cliente_id${where}
+     ORDER BY c.fecha_comentario DESC, c.id DESC`,
+    ...params,
+  );
+
+  return rows.map((row) => ({
+    id: row.id,
+    tipo: row.tipo,
+    clienteId: row.cliente_id,
+    clienteNombre: row.cliente_nombre,
+    clienteApellidos: row.cliente_apellidos,
+    productoId: row.producto_id,
+    ordenId: row.orden_id,
+    calificacion: row.calificacion,
+    texto: row.texto_comentario,
+    fecha: row.fecha_comentario,
+  }));
+}
+
 export interface ResenaProducto {
   id: number;
   clienteId: number;

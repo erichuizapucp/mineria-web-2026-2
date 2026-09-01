@@ -9,8 +9,10 @@ import {
   registrarCliente,
 } from "@/lib/api/clientes";
 import { parseNumber, parseText } from "@/app/actions/helpers";
+import { requireSession } from "@/lib/auth/requireSession";
 
 export async function crearClienteAction(formData: FormData): Promise<void> {
+  await requireSession();
   const dni = parseText(formData.get("dni"), "dni");
   const nombre = parseText(formData.get("nombre"), "nombre");
   const apellidos = parseText(formData.get("apellidos"), "apellidos");
@@ -30,6 +32,7 @@ export async function crearClienteAction(formData: FormData): Promise<void> {
 }
 
 export async function editarClienteAction(formData: FormData): Promise<void> {
+  await requireSession();
   const id = parseNumber(formData.get("id"), "id");
   const dni = parseText(formData.get("dni"), "dni");
   const nombre = parseText(formData.get("nombre"), "nombre");
@@ -53,6 +56,7 @@ export async function editarClienteAction(formData: FormData): Promise<void> {
 }
 
 export async function eliminarClienteAction(formData: FormData): Promise<void> {
+  await requireSession();
   const id = parseNumber(formData.get("id"), "id");
   await eliminarCliente(id);
   revalidatePath("/clientes");

@@ -1,4 +1,5 @@
 import type { SQLiteDb } from "@/lib/db/types";
+import { hashPassword, sha256 } from "@/lib/auth/password";
 
 const SCHEMA_SQL = `
 PRAGMA foreign_keys = ON;
@@ -96,6 +97,39 @@ CREATE INDEX IF NOT EXISTS idx_ordenes_fecha ON ordenes(fecha);
 CREATE INDEX IF NOT EXISTS idx_comentarios_tipo ON comentarios(tipo);
 CREATE INDEX IF NOT EXISTS idx_comentarios_producto ON comentarios(producto_id);
 CREATE INDEX IF NOT EXISTS idx_comentarios_cliente ON comentarios(cliente_id);
+
+CREATE TABLE IF NOT EXISTS usuarios (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  email TEXT NOT NULL UNIQUE,
+  nombre TEXT NOT NULL,
+  password_hash TEXT NOT NULL,
+  password_salt TEXT NOT NULL,
+  rol TEXT NOT NULL DEFAULT 'admin'
+);
+
+CREATE TABLE IF NOT EXISTS api_keys (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  nombre TEXT NOT NULL,
+  key_prefix TEXT NOT NULL,
+  key_hash TEXT NOT NULL UNIQUE,
+  scopes TEXT NOT NULL DEFAULT 'read write',
+  revocada INTEGER NOT NULL DEFAULT 0,
+  creada_en TEXT NOT NULL,
+  ultimo_uso_en TEXT
+);
+
+CREATE TABLE IF NOT EXISTS oauth_clients (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  client_id TEXT NOT NULL UNIQUE,
+  client_secret_hash TEXT NOT NULL,
+  client_secret_salt TEXT NOT NULL,
+  nombre TEXT NOT NULL,
+  scopes TEXT NOT NULL DEFAULT 'read write',
+  creado_en TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_api_keys_hash ON api_keys(key_hash);
+CREATE INDEX IF NOT EXISTS idx_oauth_clients_client_id ON oauth_clients(client_id);
 `;
 
 /**
@@ -1252,8 +1286,65 @@ async function insertSeedData(db: SQLiteDb): Promise<void> {
   }
 }
 
+/**
+ * Siembra usuario admin, API key demo y cliente OAuth demo desde variables de
+ * entorno. Usa INSERT OR IGNORE, asi que es idempotente y se ejecuta en cada
+ * arranque para que estas credenciales sobrevivan a los reinicios (la DB es en
+ * memoria). Las API keys / OAuth clients creados en runtime NO sobreviven.
+ */
+async function seedAuthData(db: SQLiteDb): Promise<void> {
+  const adminEmail = (process.env.ADMIN_EMAIL?.trim() || "admin@tienda.local").toLowerCase();
+  const adminPassword = process.env.ADMIN_PASSWORD?.trim() || "admin123";
+  const demoApiKey = process.env.DEMO_API_KEY?.trim() || "sk_demo_000000000000000000000000000000";
+  const demoClientId = process.env.DEMO_OAUTH_CLIENT_ID?.trim() || "scraper-demo";
+  const demoClientSecret = process.env.DEMO_OAUTH_CLIENT_SECRET?.trim() || "scraper-demo-secret";
+
+  const yaHayAdmin = await db.get<{ total: number }>(
+    "SELECT COUNT(1) as total FROM usuarios WHERE email = ?",
+    adminEmail,
+  );
+  if ((yaHayAdmin?.total ?? 0) === 0) {
+    const { hash, salt } = await hashPassword(adminPassword);
+    await db.run(
+      `INSERT OR IGNORE INTO usuarios (email, nombre, password_hash, password_salt, rol)
+       VALUES (?, ?, ?, ?, 'admin')`,
+      adminEmail,
+      "Administrador",
+      hash,
+      salt,
+    );
+  }
+
+  await db.run(
+    `INSERT OR IGNORE INTO api_keys (nombre, key_prefix, key_hash, scopes, revocada, creada_en)
+     VALUES (?, ?, ?, 'read write', 0, ?)`,
+    "Demo (sembrada)",
+    demoApiKey.slice(0, 12),
+    sha256(demoApiKey),
+    new Date().toISOString(),
+  );
+
+  const yaHayClient = await db.get<{ total: number }>(
+    "SELECT COUNT(1) as total FROM oauth_clients WHERE client_id = ?",
+    demoClientId,
+  );
+  if ((yaHayClient?.total ?? 0) === 0) {
+    const { hash, salt } = await hashPassword(demoClientSecret);
+    await db.run(
+      `INSERT OR IGNORE INTO oauth_clients (client_id, client_secret_hash, client_secret_salt, nombre, scopes, creado_en)
+       VALUES (?, ?, ?, ?, 'read write', ?)`,
+      demoClientId,
+      hash,
+      salt,
+      "Demo scraper (sembrado)",
+      new Date().toISOString(),
+    );
+  }
+}
+
 export async function initializeDatabase(db: SQLiteDb): Promise<void> {
   await db.exec(SCHEMA_SQL);
+  await seedAuthData(db);
 
   const row = await db.get<{ total: number }>("SELECT COUNT(1) as total FROM productos");
   if ((row?.total ?? 0) > 0) {

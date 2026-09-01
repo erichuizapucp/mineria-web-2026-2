@@ -9,8 +9,10 @@ import {
   getProductoPorId,
 } from "@/lib/api/productos";
 import { parseNumber, parseText } from "@/app/actions/helpers";
+import { requireSession } from "@/lib/auth/requireSession";
 
 export async function crearProductoAction(formData: FormData): Promise<void> {
+  await requireSession();
   const codigo = parseText(formData.get("codigo"), "codigo");
   const nombre = parseText(formData.get("nombre"), "nombre");
   const descripcion = parseText(formData.get("descripcion"), "descripcion");
@@ -31,6 +33,7 @@ export async function crearProductoAction(formData: FormData): Promise<void> {
 }
 
 export async function editarProductoAction(formData: FormData): Promise<void> {
+  await requireSession();
   const id = parseNumber(formData.get("id"), "id");
   const codigo = parseText(formData.get("codigo"), "codigo");
   const nombre = parseText(formData.get("nombre"), "nombre");
@@ -54,6 +57,7 @@ export async function editarProductoAction(formData: FormData): Promise<void> {
 }
 
 export async function eliminarProductoAction(formData: FormData): Promise<void> {
+  await requireSession();
   const id = parseNumber(formData.get("id"), "id");
   await eliminarProducto(id);
   revalidatePath("/productos");

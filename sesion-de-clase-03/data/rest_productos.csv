@@ -1,0 +1,91 @@
+id,codigo,nombre,categoria,subcategoria,precio,stock,rating_promedio,total_resenas
+1,PROD-001,Apple iPhone 15 Pro Max 256GB,Smartphones,Gama Alta,5599,18,3.5,4
+2,PROD-002,Apple iPhone 15 128GB,Smartphones,Gama Alta,3799,25,3.3,4
+3,PROD-003,Samsung Galaxy S24 Ultra 512GB,Smartphones,Gama Alta,5299,15,3.3,4
+4,PROD-004,Samsung Galaxy A55 128GB,Smartphones,Gama Media,1399,40,3,4
+5,PROD-005,Xiaomi Redmi Note 13 Pro 256GB,Smartphones,Gama Media,999,45,2.8,4
+6,PROD-006,Xiaomi Poco X6 Pro 512GB,Smartphones,Gama Media,1299,30,2.6,5
+7,PROD-007,Google Pixel 8 128GB,Smartphones,Gama Alta,2899,12,3.3,4
+8,PROD-008,Motorola Moto G84 256GB,Smartphones,Gama Basica,899,35,3,4
+9,PROD-009,Samsung Galaxy A15 128GB,Smartphones,Gama Basica,699,50,1.8,5
+10,PROD-010,OnePlus 12 256GB,Smartphones,Gama Alta,3299,10,3.5,4
+11,PROD-011,Apple MacBook Air M2 13 pulgadas 256GB,Laptops y Computadoras,Ultrabooks,4999,14,3.3,4
+12,PROD-012,Apple MacBook Pro 14 pulgadas M3 512GB,Laptops y Computadoras,Ultrabooks,8999,8,4,5
+13,PROD-013,Dell XPS 13 9340 Intel Core i7,Laptops y Computadoras,Ultrabooks,6499,9,2.8,4
+14,PROD-014,HP Pavilion 15 Intel Core i5,Laptops y Computadoras,Uso General,2799,22,3,5
+15,PROD-015,Lenovo IdeaPad Slim 3 Ryzen 5,Laptops y Computadoras,Uso General,1999,28,2.8,4
+16,PROD-016,ASUS ROG Strix G16 RTX 4060,Laptops y Computadoras,Gaming,7499,7,3.4,5
+17,PROD-017,Lenovo Legion 5 Pro RTX 4070,Laptops y Computadoras,Gaming,8299,6,3.3,4
+18,PROD-018,Acer Aspire 5 Intel Core i5,Laptops y Computadoras,Uso General,2299,20,4,3
+19,PROD-019,HP Omen 16 RTX 4060,Laptops y Computadoras,Gaming,6999,8,2,4
+20,PROD-020,Lenovo ThinkPad E14 Gen 5,Laptops y Computadoras,Uso Profesional,3499,16,3.7,3
+21,PROD-021,Sony WH-1000XM5,Audio,Audifonos Inalambricos,1699,30,3.8,5
+22,PROD-022,Apple AirPods Pro 2da Generacion,Audio,Audifonos Inalambricos,999,40,4,3
+23,PROD-023,Bose QuietComfort Ultra,Audio,Audifonos Inalambricos,1899,18,3.3,3
+24,PROD-024,JBL Flip 6,Audio,Parlantes Portatiles,449,45,2.8,4
+25,PROD-025,JBL Charge 5,Audio,Parlantes Portatiles,699,35,4,3
+26,PROD-026,Sony SRS-XB13,Audio,Parlantes Portatiles,249,55,3,3
+27,PROD-027,Samsung Galaxy Buds2 Pro,Audio,Audifonos Inalambricos,799,32,3.3,3
+28,PROD-028,Marshall Emberton II,Audio,Parlantes Portatiles,899,20,3,3
+29,PROD-029,Sennheiser Momentum 4,Audio,Audifonos Inalambricos,1499,14,4.5,2
+30,PROD-030,JBL Tune 510BT,Audio,Audifonos Inalambricos,189,60,2.7,3
+31,PROD-031,LG OLED55C3 55 pulgadas,Televisores y Video,Televisores OLED,4999,10,3.8,4
+32,PROD-032,Samsung QN65Q80C 65 pulgadas QLED,Televisores y Video,Televisores QLED,6499,8,3.3,3
+33,PROD-033,Sony Bravia XR A80L 55 pulgadas OLED,Televisores y Video,Televisores OLED,7299,6,4.5,2
+34,PROD-034,TCL 50 pulgadas 4K Google TV,Televisores y Video,Televisores LED,1799,25,2.8,4
+35,PROD-035,Hisense 55 pulgadas ULED U6,Televisores y Video,Televisores ULED,2299,18,2.5,2
+36,PROD-036,Samsung 43 pulgadas Crystal UHD,Televisores y Video,Televisores LED,1499,30,2.3,4
+37,PROD-037,LG 50 pulgadas UHD UR8000,Televisores y Video,Televisores LED,1999,22,4,1
+38,PROD-038,Xiaomi TV A Pro 43 pulgadas,Televisores y Video,Televisores LED,1299,28,3.5,2
+39,PROD-039,Sony Bravia X75L 65 pulgadas,Televisores y Video,Televisores LED,3299,12,2,3
+40,PROD-040,Samsung The Frame 55 pulgadas,Televisores y Video,Televisores QLED,5999,7,3.5,2
+41,PROD-041,Sony PlayStation 5 Slim,Gaming y Consolas,Consolas,2699,15,4.8,4
+42,PROD-042,Sony PlayStation 5 Digital Edition,Gaming y Consolas,Consolas,2299,12,3.5,4
+43,PROD-043,Microsoft Xbox Series X,Gaming y Consolas,Consolas,2599,10,3.3,4
+44,PROD-044,Nintendo Switch OLED,Gaming y Consolas,Consolas,1599,20,4.4,5
+45,PROD-045,Nintendo Switch Lite,Gaming y Consolas,Consolas,899,25,2.8,4
+46,PROD-046,Logitech G502 Hero,Gaming y Consolas,Perifericos Gaming,189,40,4.3,4
+47,PROD-047,Razer DeathAdder V3,Gaming y Consolas,Perifericos Gaming,259,35,3.7,3
+48,PROD-048,HyperX Cloud II,Gaming y Consolas,Perifericos Gaming,349,30,3,4
+49,PROD-049,SteelSeries Arctis Nova 7,Gaming y Consolas,Perifericos Gaming,799,16,4.5,2
+50,PROD-050,Razer Kishi V2,Gaming y Consolas,Perifericos Gaming,399,20,3.3,4
+51,PROD-051,Apple Watch Series 9 GPS 41mm,Wearables y Fitness,Smartwatches,1899,24,4,4
+52,PROD-052,Apple Watch Ultra 2,Wearables y Fitness,Smartwatches,3999,9,4,4
+53,PROD-053,Samsung Galaxy Watch6 Classic,Wearables y Fitness,Smartwatches,1699,18,3.3,3
+54,PROD-054,Garmin Forerunner 265,Wearables y Fitness,Relojes Deportivos,2199,12,4.3,4
+55,PROD-055,Garmin Fenix 7,Wearables y Fitness,Relojes Deportivos,3799,7,3.3,3
+56,PROD-056,Xiaomi Smart Band 8,Wearables y Fitness,Bandas de Actividad,149,60,4,4
+57,PROD-057,Fitbit Charge 6,Wearables y Fitness,Bandas de Actividad,699,26,3.3,3
+58,PROD-058,Amazfit GTS 4 Mini,Wearables y Fitness,Smartwatches,449,32,3.3,3
+59,PROD-059,Garmin Venu 3,Wearables y Fitness,Relojes Deportivos,2499,10,4.3,3
+60,PROD-060,Huawei Watch GT 4,Wearables y Fitness,Smartwatches,999,20,2.8,4
+61,PROD-061,Canon EOS R50 con lente 18-45mm,Fotografia y Video,Camaras Mirrorless,3499,10,4.7,3
+62,PROD-062,Sony Alpha a6400,Fotografia y Video,Camaras Mirrorless,4299,8,4.3,4
+63,PROD-063,Canon EOS Rebel T7,Fotografia y Video,Camaras DSLR,1899,14,2.8,4
+64,PROD-064,GoPro HERO12 Black,Fotografia y Video,Camaras de Accion,1799,22,4.3,4
+65,PROD-065,DJI Osmo Action 4,Fotografia y Video,Camaras de Accion,1699,18,3.3,4
+66,PROD-066,DJI Mini 4 Pro,Fotografia y Video,Drones,4499,6,4.3,4
+67,PROD-067,DJI Air 3,Fotografia y Video,Drones,6999,4,3.7,3
+68,PROD-068,Nikon Z50,Fotografia y Video,Camaras Mirrorless,3999,9,4,2
+69,PROD-069,Fujifilm Instax Mini 12,Fotografia y Video,Camaras Instantaneas,349,40,3,4
+70,PROD-070,Insta360 X4,Fotografia y Video,Camaras de Accion,2299,12,5,2
+71,PROD-071,Amazon Echo Dot 5ta Generacion,Electrodomesticos Inteligentes,Asistentes Virtuales,189,50,3.3,4
+72,PROD-072,Google Nest Mini 2da Generacion,Electrodomesticos Inteligentes,Asistentes Virtuales,159,45,3,3
+73,PROD-073,Xiaomi Robot Vacuum X10+,Electrodomesticos Inteligentes,Robots Aspiradora,1899,10,4.3,4
+74,PROD-074,iRobot Roomba 694,Electrodomesticos Inteligentes,Robots Aspiradora,1499,14,2.8,5
+75,PROD-075,Philips Hue White and Color Kit de Inicio,Electrodomesticos Inteligentes,Iluminacion Inteligente,599,20,4,3
+76,PROD-076,TP-Link Tapo C220,Electrodomesticos Inteligentes,Seguridad Inteligente,219,30,3.7,3
+77,PROD-077,Ring Video Doorbell Wired,Electrodomesticos Inteligentes,Seguridad Inteligente,399,22,2.3,4
+78,PROD-078,Xiaomi Mi Smart Kettle Pro,Electrodomesticos Inteligentes,Cocina Inteligente,249,25,4,2
+79,PROD-079,Instant Pot Duo 7 en 1,Electrodomesticos Inteligentes,Cocina Inteligente,449,18,4.5,4
+80,PROD-080,Samsung Family Hub Refrigeradora Inteligente,Electrodomesticos Inteligentes,Linea Blanca Inteligente,12999,3,3.3,4
+81,PROD-081,Logitech MX Master 3S,Accesorios y Componentes,Perifericos,399,28,5,3
+82,PROD-082,Anker 737 Power Bank 24000mAh,Accesorios y Componentes,Cargadores y Baterias,349,30,4.3,4
+83,PROD-083,Anker PowerLine III Cable USB-C,Accesorios y Componentes,Cables y Adaptadores,59,80,4,2
+84,PROD-084,Kingston NV2 SSD NVMe 1TB,Accesorios y Componentes,Almacenamiento,249,35,4,4
+85,PROD-085,Samsung T7 SSD Portatil 1TB,Accesorios y Componentes,Almacenamiento,399,24,3.8,4
+86,PROD-086,SanDisk Extreme microSD 256GB,Accesorios y Componentes,Almacenamiento,129,50,3.3,3
+87,PROD-087,Corsair Vengeance 16GB DDR4 3200MHz,Accesorios y Componentes,Componentes PC,249,30,3.8,4
+88,PROD-088,WD Blue 2TB HDD,Accesorios y Componentes,Almacenamiento,249,26,3,4
+89,PROD-089,Belkin Cargador USB-C 30W,Accesorios y Componentes,Cargadores y Baterias,89,45,4.5,2
+90,PROD-090,Logitech C920 Webcam HD Pro,Accesorios y Componentes,Perifericos,279,20,4.7,3

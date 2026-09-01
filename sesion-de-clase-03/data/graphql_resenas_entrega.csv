@@ -1,0 +1,111 @@
+id,orden_id,orden_numero,cliente_id,cliente_nombre,producto_id,calificacion,fecha,texto
+538,123,OR-00123,73,Valentina Ayelen Rodriguez Suarez,10,1,2025-01-31,"Recibi el pedido incompleto, faltaba el cable de carga original del OnePlus 12 dentro de la caja. Tuve que esperar un envio adicional solo para recibir ese accesorio."
+563,122,OR-00122,88,Maria Jose Torres Zambrano,89,3,2025-01-27,"El segundo cargador Belkin llego sin contratiempos, en el tiempo estimado y correctamente empacado."
+537,118,OR-00118,28,Omar Sebastian Ibarra Cotrina,45,5,2025-01-15,La segunda Switch Lite que regale llego perfecta y justo a tiempo para el cumpleanos que la necesitaba. Toda la experiencia de compra fue muy fluida.
+562,117,OR-00117,54,Ignacio Andres Parra Cordero,34,5,2025-01-11,"El segundo television TCL llego perfecto, bien empacado y sin ningun dano, muy distinto a la primera experiencia negativa."
+501,116,OR-00116,80,Mateo Joaquin Ferreyra Aguirre,83,4,2026-01-24,Me confirmaron por correo la garantia de un ano del cable Anker sin ningun problema.
+477,116,OR-00116,80,Mateo Joaquin Ferreyra Aguirre,23,5,2025-01-07,"Los audifonos Bose se emparejaron al instante con mi telefono, cero complicaciones."
+536,113,OR-00113,33,Milagros Del Pilar Rojas Farfan,80,2,2024-12-30,"La instalacion de este segundo pedido de Family Hub se retraso otra vez, casi diez dias despues de la entrega del equipo. Deberian mejorar la coordinacion con el equipo tecnico externo."
+561,112,OR-00112,7,Diana Carolina Paredes Rios,69,3,2024-12-26,"La segunda camara instantanea llego completa y a tiempo, sin ningun inconveniente en esta ocasion."
+500,111,OR-00111,101,Fernanda Sofia Hernandez Lopez,28,5,2026-01-08,Cambiar el color de mi Marshall por otro modelo fue un proceso rapido y sin costo.
+476,111,OR-00111,101,Fernanda Sofia Hernandez Lopez,58,4,2024-12-22,El Amazfit se sincronizo sin problemas con la app apenas lo encendi.
+535,108,OR-00108,23,Melissa Alexandra Cabrera Flores,25,3,2024-12-14,El parlante JBL llego con un dia de retraso por un problema logistico que la propia tienda reconocio en el correo de disculpas. El producto en si llego sin ningun dano.
+560,107,OR-00107,117,Camila Antonella Acosta Ferreira,14,2,2024-12-10,La segunda laptop HP que compre llego con la pantalla algo desalineada del chasis. Funciona bien pero se nota un ajuste imperfecto.
+499,106,OR-00106,1,Maria Fernanda Quispe Mamani,63,4,2025-12-24,Me explicaron por chat como registrar la garantia internacional de la Canon Rebel.
+475,106,OR-00106,1,Maria Fernanda Quispe Mamani,3,5,2024-12-06,El Galaxy S24 Ultra ya venia con la mayoria del software actualizado desde fabrica.
+534,103,OR-00103,46,Benjamin Andres Munoz Vergara,60,5,2024-11-29,El segundo Huawei Watch que compre llego completo con todos los accesorios esta vez. La entrega fue rapida y sin ningun contratiempo.
+559,102,OR-00102,72,Tomas Nicolas Gonzalez Acosta,49,1,2024-11-24,"Recibi el pedido con los audifonos SteelSeries de un color distinto al solicitado, sin ninguna indicacion previa del cambio en el pedido."
+498,101,OR-00101,98,Michelle Alexandra Pincay Vera,8,3,2025-12-08,El soporte tardo en responder sobre un problema de bateria del Moto G84.
+474,101,OR-00101,98,Michelle Alexandra Pincay Vera,38,5,2024-11-20,"Configure el Xiaomi TV en minutos, la guia impresa que trajo fue muy clara."
+533,98,OR-00098,56,Valentina Sofia Ramirez Gomez,5,4,2024-11-13,"Este segundo Redmi Note llego bien empacado y sin ningun problema, distinto a mi experiencia anterior con la primera unidad. El tiempo de entrega fue el estimado originalmente."
+558,97,OR-00097,82,Bautista Thiago Nunez Correa,84,4,2024-11-08,"Este segundo SSD Kingston llego completo con todos los accesorios, distinto a mi primera experiencia. El envio fue rapido."
+497,96,OR-00096,85,Zoe Renata Juarez Godoy,43,5,2025-11-22,Me ayudaron a activar la garantia extendida de la Xbox sin ningun costo adicional.
+473,96,OR-00096,85,Zoe Renata Juarez Godoy,73,3,2024-11-04,El robot aspiradora llego bien pero tuve que configurar el wifi manualmente sin ayuda de la app.
+532,93,OR-00093,17,Valeria Nicole Cruz Espinoza,40,2,2024-10-28,El segundo Samsung The Frame que compre llego con un pixel muerto visible en la esquina superior de la pantalla. Estoy a la espera de que aprueben el cambio por un equipo nuevo.
+557,92,OR-00092,43,Camila Antonia Fuentes Bravo,29,2,2024-10-23,El segundo pedido de audifonos Sennheiser llego con retraso durante una fecha de alta demanda sin ninguna notificacion previa del cambio.
+496,91,OR-00091,116,Rodrigo Ezequiel Silva Cardozo,78,4,2025-11-06,Resolvieron mi consulta sobre el hervidor Xiaomi mediante un video explicativo por correo.
+472,91,OR-00091,116,Rodrigo Ezequiel Silva Cardozo,18,4,2024-10-19,Segunda vez que compro una Acer Aspire y de nuevo llego rapido y en perfecto estado.
+531,88,OR-00088,38,Franco Alonso Rivera Tello,75,4,2024-10-12,El kit Philips Hue llego completo pero la caja exterior mostraba senales de haber sido abierta antes del envio. El contenido interno estaba intacto y sellado.
+556,87,OR-00087,12,Ricardo Manuel Diaz Guerrero,64,3,2024-10-08,"La GoPro llego a tiempo aunque la caja no traia el sello de garantia visible, tuve que pedirlo por correo para confirmar la cobertura."
+495,86,OR-00086,108,Leonardo David Castillo Mendoza,23,5,2025-10-21,El equipo de soporte reemplazo rapido un cable defectuoso de mis audifonos Bose.
+471,86,OR-00086,108,Leonardo David Castillo Mendoza,53,5,2024-10-03,El Galaxy Watch6 llego antes de la fecha limite que me habian prometido.
+530,83,OR-00083,66,Gabriela Alejandra Moreno Duarte,20,3,2024-09-26,La ThinkPad llego con el cargador de un modelo distinto al de la laptop. Tras el reclamo me enviaron el cargador correcto en un par de dias adicionales.
+555,82,OR-00082,92,Andrea Estefania Vera Macias,9,1,2024-09-22,"El telefono llego usado, con marcas de uso en la pantalla que no correspondian a un equipo nuevo segun la orden de compra. Reclame de inmediato con fotos."
+494,81,OR-00081,19,Daniela Fiorella Ochoa Vidal,58,4,2025-10-05,Me orientaron bien sobre como sincronizar el Amazfit con Google Fit.
+470,81,OR-00081,19,Daniela Fiorella Ochoa Vidal,88,4,2024-09-17,El disco WD Blue llego bien protegido contra golpes con plastico de burbuja.
+529,78,OR-00078,69,Miguel Angel Cifuentes Roa,55,1,2024-09-10,"El Garmin Fenix 7 llego usado, con marcas de uso evidentes en la correa a pesar de estar marcado como nuevo. Tuve que iniciar un reclamo formal para conseguir el reemplazo correcto."
+554,77,OR-00077,22,Cesar Augusto Bustamante Loza,44,2,2024-09-06,La consola llego con un Joy-Con que no respondia bien desde el primer uso. Tuve que gestionar el cambio de esa pieza especifica.
+493,76,OR-00076,1,Maria Fernanda Quispe Mamani,3,5,2025-09-19,El servicio postventa fue excelente cuando pregunte por accesorios compatibles con mi Galaxy S24.
+469,76,OR-00076,1,Maria Fernanda Quispe Mamani,33,5,2024-09-02,"El Sony Bravia A80L llego con instalacion coordinada por la tienda, muy buen servicio."
+528,73,OR-00073,35,Ursula Beatriz Castaneda Ortiz,90,5,2024-08-25,"La webcam Logitech llego al dia siguiente de realizar el pedido. Todo llego completo, con caja original y sellada."
+553,72,OR-00072,9,Patricia Isabel Soto Bravo,79,3,2024-08-21,"La olla Instant Pot llego completa, el unico inconveniente fue que el curier toco el timbre solo una vez y casi no la recibo."
+492,71,OR-00071,103,Ximena Alejandra Gonzalez Flores,38,3,2025-09-03,"Tuve que contactar soporte porque el TV no encontraba mi red wifi, lo resolvieron por chat."
+468,71,OR-00071,103,Ximena Alejandra Gonzalez Flores,68,4,2024-08-17,"La Nikon Z50 llego completa con cargador y correa, todo en orden."
+527,68,OR-00068,50,Diego Alonso Vera Escobar,35,4,2024-08-09,El television Hisense llego bien protegido con espuma adicional en las esquinas. Solo tuve que esperar un poco mas de lo normal para coordinar la entrega en un cuarto piso sin ascensor.
+552,67,OR-00067,3,Rosa Elena Vargas Castillo,24,2,2024-08-05,El parlante JBL llego sin el cable de carga incluido en la caja. Tuve que reclamar por separado para que me lo enviaran.
+491,66,OR-00066,102,Diego Alejandro Ramirez Torres,73,4,2025-08-18,El soporte me ayudo por telefono a resolver un error de conexion del robot aspiradora.
+467,66,OR-00066,102,Diego Alejandro Ramirez Torres,13,5,2024-08-01,"La Dell XPS 13 llego con embalaje reforzado, se nota que cuidan los equipos de gama alta."
+526,63,OR-00063,107,Valentina Ximena Reyes Aguilar,70,2,2024-07-24,La Insta360 X4 llego con dos dias de retraso durante una fecha de alta demanda. El curier no dejo ninguna notificacion del nuevo horario de entrega.
+551,62,OR-00062,86,Ana Belen Chalen Vera,59,1,2024-07-20,"El Garmin Venu 3 llego con la pantalla ya rayada, algo que no correspondia a un producto nuevo. Estoy esperando la respuesta del reclamo por garantia."
+490,61,OR-00061,39,Estefany Nicole Guevara Panduro,18,5,2025-08-02,"Cuando tuve una duda sobre la garantia de la Acer, me respondieron el mismo dia."
+466,61,OR-00061,39,Estefany Nicole Guevara Panduro,48,3,2024-07-16,Los HyperX Cloud II llegaron bien pero el seguimiento del pedido no se actualizo a tiempo.
+525,58,OR-00058,44,Cristobal Ignacio Silva Contreras,15,3,2024-07-08,La Lenovo IdeaPad llego con un rayon leve en la tapa superior que no se veia en las fotos del producto. Fuera de eso el equipo funciona perfectamente.
+550,57,OR-00057,48,Vicente Ignacio Yanez Aravena,4,3,2024-07-04,"El Galaxy A55 llego en la fecha estimada, la caja se veia algo usada pero el telefono estaba perfecto y sellado."
+513,56,OR-00056,65,Sebastian David Rincon Vargas,23,5,2026-08-04,"Los Bose siguen con excelente cancelacion de ruido, la mejor compra para mis vuelos frecuentes."
+489,56,OR-00056,65,Sebastian David Rincon Vargas,53,5,2025-07-17,El Galaxy Watch se sincronizo con mi telefono en segundos apenas lo active.
+465,56,OR-00056,65,Sebastian David Rincon Vargas,83,4,2024-06-30,"El cable Anker llego junto con otros productos de mi pedido, todo en un solo envio."
+524,53,OR-00053,60,Mariana Alejandra Lopez Betancur,50,5,2024-06-22,El Razer Kishi V2 llego perfectamente empacado y antes de la fecha estimada. La experiencia de compra y entrega fue impecable de principio a fin.
+549,52,OR-00052,81,Emilia Victoria Castro Villalba,39,2,2024-06-18,El television Sony llego bien mas la instalacion de la base tardo mas de una semana en coordinarse con el equipo tecnico.
+512,51,OR-00051,8,Jorge Luis Mendoza Aguilar,58,4,2026-07-19,El Amazfit sigue midiendo bien mis entrenamientos despues de varios meses de uso diario.
+488,51,OR-00051,8,Jorge Luis Mendoza Aguilar,88,4,2025-07-01,"El disco WD Blue funciono de inmediato al conectarlo, sin necesidad de formatear."
+464,51,OR-00051,8,Jorge Luis Mendoza Aguilar,28,5,2024-06-14,"El parlante Marshall llego en menos de 48 horas, muy conforme con la rapidez."
+523,48,OR-00048,2,Jose Antonio Huaman Rojas,85,2,2024-06-06,"El SSD Samsung T7 llego con el cable USB-C incorrecto dentro de la caja, uno que no era compatible con el puerto del disco. Tuve que comprar un cable aparte mientras resolvian el reclamo."
+548,47,OR-00047,28,Omar Sebastian Ibarra Cotrina,74,3,2024-06-02,El robot aspiradora llego completo aunque el manual venia en ingles a pesar de haberlo pedido en un sitio en espanol.
+511,46,OR-00046,1,Maria Fernanda Quispe Mamani,3,5,2026-07-03,Definitivamente el Galaxy S24 Ultra fue la mejor compra de tecnologia que hice este ano.
+487,46,OR-00046,1,Maria Fernanda Quispe Mamani,33,5,2025-06-15,La instalacion del Sony Bravia estuvo lista en menos de una hora gracias al tecnico.
+463,46,OR-00046,1,Maria Fernanda Quispe Mamani,63,4,2024-05-29,"La Canon Rebel T7 llego a tiempo, el courier fue muy amable al entregarla."
+522,43,OR-00043,106,Santiago Emiliano Sanchez Morales,30,4,2024-05-21,Los JBL Tune 510BT llegaron bien empacados junto con el resto de mi pedido. El unico detalle menor fue que el manual venia doblado dentro de la caja.
+547,42,OR-00042,59,Santiago Andres Gil Ochoa,19,1,2024-05-17,La laptop gamer llego con la caja visiblemente golpeada en una esquina y una pequena abolladura en la tapa del equipo. Ya inicie el proceso de cambio.
+510,41,OR-00041,33,Milagros Del Pilar Rojas Farfan,38,5,2026-06-17,El Xiaomi TV sigue con buena imagen y el sistema no se ha vuelto lento con el tiempo.
+486,41,OR-00041,33,Milagros Del Pilar Rojas Farfan,68,4,2025-05-30,La Nikon Z50 fue facil de configurar siguiendo los videos tutoriales de la marca.
+462,41,OR-00041,33,Milagros Del Pilar Rojas Farfan,8,2,2024-05-13,"El Moto G84 llego con la caja abierta, aunque el equipo en si estaba en buen estado."
+521,38,OR-00038,75,Julieta Milagros Perez Ortiz,65,3,2024-05-05,La DJI Osmo Action 4 llego en la fecha estimada pero el seguimiento del pedido nunca se actualizo correctamente en la web. Al final no hubo ningun problema con el producto en si.
+546,37,OR-00037,49,Constanza Isidora Carrasco Leiva,54,2,2024-05-01,El reloj Garmin llego con la correa de un color distinto al que aparecia en las fotos del producto. El equipo en si funciona correctamente.
+509,36,OR-00036,85,Zoe Renata Juarez Godoy,73,3,2026-06-01,El robot aspiradora funciona bien pero el filtro se ensucia mas rapido de lo que esperaba.
+485,36,OR-00036,85,Zoe Renata Juarez Godoy,13,5,2025-05-14,La Dell XPS vino con Windows ya activado y listo para trabajar desde el primer encendido.
+461,36,OR-00036,85,Zoe Renata Juarez Godoy,43,5,2024-04-27,La Xbox Series X llego muy bien protegida con espuma adicional dentro de la caja.
+520,33,OR-00033,43,Camila Antonia Fuentes Bravo,10,1,2024-04-19,El OnePlus 12 que recibi no coincidia con el color que habia pedido en el pedido original. Tuve que devolverlo y esperar el cambio por el modelo correcto.
+545,32,OR-00032,116,Rodrigo Ezequiel Silva Cardozo,89,3,2024-04-15,"El cargador Belkin llego sin contratiempos, aunque tarde un par de dias mas de lo que indicaba el estimado inicial."
+508,31,OR-00031,90,Gabriela Nicole Moreira Bravo,18,4,2026-05-16,La Acer Aspire sigue rindiendo bien para mis clases virtuales despues de meses de uso.
+484,31,OR-00031,90,Gabriela Nicole Moreira Bravo,48,4,2025-04-29,Los HyperX se configuraron rapido con el software de audio de mi PC.
+460,31,OR-00031,90,Gabriela Nicole Moreira Bravo,78,4,2024-04-11,"El hervidor Xiaomi llego completo, solo el manual venia en ingles y no en espanol."
+519,28,OR-00028,12,Ricardo Manuel Diaz Guerrero,45,5,2024-04-04,"La Switch Lite llego al dia siguiente de comprarla, mas rapido de lo que esperaba. Todo llego completo y en perfecto estado."
+544,27,OR-00027,95,Diego Armando Chiluisa Guaman,34,1,2024-03-30,"El television TCL llego con la pantalla rota, visible apenas se abrio la caja pese a que el empaque exterior se veia intacto. Inicie el reclamo el mismo dia."
+507,26,OR-00026,22,Cesar Augusto Bustamante Loza,53,5,2026-04-30,"El Galaxy Watch se ha vuelto parte de mi rutina diaria, muy satisfecho con la compra."
+483,26,OR-00026,22,Cesar Augusto Bustamante Loza,83,4,2025-04-13,"El cable Anker funciono perfecto desde que lo saque de la caja, sin defectos."
+459,26,OR-00026,22,Cesar Augusto Bustamante Loza,23,5,2024-03-26,"Los Bose QuietComfort llegaron en caja resistente, se nota el cuidado en el empaque."
+518,23,OR-00023,117,Camila Antonella Acosta Ferreira,80,2,2024-03-19,La instalacion de la Samsung Family Hub se coordino con dos semanas de demora desde la entrega del equipo. El tecnico finalmente hizo un buen trabajo pero la espera fue larga.
+543,22,OR-00022,29,Fiorella Xiomara Vega Malca,69,3,2024-03-14,"La camara instantanea llego a tiempo, el empaque estaba en buen estado aunque algo genérico para un producto de regalo."
+506,21,OR-00021,76,Franco Nicolas Sosa Herrera,88,4,2026-04-14,El disco WD Blue no ha dado ningun problema desde que lo instale.
+482,21,OR-00021,76,Franco Nicolas Sosa Herrera,28,5,2025-03-28,El parlante Marshall se conecto por bluetooth sin ningun inconveniente desde el primer intento.
+458,21,OR-00021,76,Franco Nicolas Sosa Herrera,58,3,2024-03-10,El Amazfit GTS 4 Mini llego con un dia de retraso frente a la fecha estimada.
+517,18,OR-00018,24,Victor Hugo Espinoza Ramirez,25,4,2024-03-03,"El JBL Charge 5 llego bien empacado, solo con un dia de retraso frente a la fecha estimada original. El equipo en si llego en perfecto estado."
+542,17,OR-00017,45,Fernanda Paz Espinoza Tapia,14,2,2024-02-27,La laptop HP llego con un dia de retraso adicional despues de que el courier reprogramara la entrega sin avisarme primero.
+505,16,OR-00016,1,Maria Fernanda Quispe Mamani,33,5,2026-03-29,"El Sony Bravia sigue con una imagen impecable, definitivamente repetiria la compra."
+481,16,OR-00016,1,Maria Fernanda Quispe Mamani,63,4,2025-03-12,La Canon Rebel fue sencilla de configurar siguiendo el manual incluido.
+457,16,OR-00016,1,Maria Fernanda Quispe Mamani,3,5,2024-02-23,El Galaxy S24 Ultra llego perfectamente sellado y con todos los accesorios originales.
+516,13,OR-00013,25,Grecia Estefany Alvarado Cueva,60,3,2024-02-16,El Huawei Watch GT 4 llego a tiempo pero sin el cable de carga dentro de la caja. Tuve que reclamar por separado para que me lo enviaran.
+541,12,OR-00012,119,Sofia Guadalupe Martinez Bentancor,49,3,2024-02-12,Los audifonos SteelSeries llegaron completos aunque el seguimiento del envio se quedo congelado por dos dias sin actualizarse.
+504,11,OR-00011,93,Jefferson David Quinde Alvarado,68,4,2026-03-13,La Nikon Z50 cumplio todas mis expectativas para fotografia de viajes.
+480,11,OR-00011,93,Jefferson David Quinde Alvarado,8,3,2025-02-24,El Moto G84 necesito varias actualizaciones antes de poder usarlo con normalidad.
+456,11,OR-00011,93,Jefferson David Quinde Alvarado,38,5,2024-02-07,"El Xiaomi TV A Pro llego antes de lo estimado, muy buena coordinacion de envio."
+515,8,OR-00008,15,Gabriela Beatriz Navarro Ponce,5,1,2024-01-31,El Redmi Note 13 Pro llego con la caja visiblemente aplastada y un golpe en una esquina de la pantalla. Tuve que iniciar un proceso de cambio que tardo mas de una semana en resolverse.
+540,7,OR-00007,120,Nicolas Emiliano Ramos Olivera,84,1,2024-01-27,El SSD Kingston llego sin el tornillo de montaje que se menciona en la descripcion. Tuve que comprar uno aparte en una ferreteria para poder instalarlo.
+503,6,OR-00006,21,Karla Milagros Villanueva Rios,13,5,2026-02-25,La Dell XPS 13 sigue funcionando perfecta despues de varios meses de uso intensivo.
+479,6,OR-00006,21,Karla Milagros Villanueva Rios,43,5,2025-02-08,"La Xbox se actualizo sola apenas la conecte a internet, lista para jugar en poco tiempo."
+455,6,OR-00006,21,Karla Milagros Villanueva Rios,73,4,2024-01-22,"El robot Xiaomi X10+ llego a tiempo, aunque la caja venia algo maltratada por fuera."
+514,3,OR-00003,16,Andres Felipe Salazar Vega,40,2,2024-01-15,El Samsung The Frame llego tres dias despues de la fecha estimada sin ninguna notificacion previa del retraso. Cuando escribi a soporte recien me confirmaron el nuevo tiempo de entrega.
+539,2,OR-00002,37,Katherine Xiomara Solis Bardales,29,2,2024-01-11,"Los audifonos Sennheiser llegaron con la caja exterior humeda, parece que estuvo expuesta a lluvia durante el transporte. El producto en si no sufrio dano."
+502,1,OR-00001,84,Agustin Ezequiel Lopez Cabrera,48,5,2026-02-09,"Despues de meses de uso, sigo muy conforme con mis HyperX Cloud II, volveria a comprar la marca."
+478,1,OR-00001,84,Agustin Ezequiel Lopez Cabrera,78,4,2025-01-23,"El hervidor Xiaomi fue facil de configurar con la app, en minutos ya lo estaba usando."
+454,1,OR-00001,84,Agustin Ezequiel Lopez Cabrera,18,5,2024-01-07,"Mi Acer Aspire 5 llego en dos dias habiles, muy bien empacada y sin ningun golpe."

@@ -1,0 +1,798 @@
+{
+  "info": {
+    "name": "Tienda Virtual - REST API",
+    "description": "REST API de la Tienda Virtual (Next.js).\n\nAutenticacion: cada request (excepto Health) usa API key en el header `x-api-key` heredada de la coleccion (`{{apiKey}}`).\nAlternativa OAuth2: ejecuta primero `OAuth / Obtener access token` (guarda `{{accessToken}}` en el environment) y usa los requests marcados `(via OAuth Bearer)`.\n\nImporta tambien el environment `tienda-virtual.postman_environment.json` y selecciona \"Tienda Virtual - Local\".\n\nArranca el servidor con `npm run dev` en el proyecto.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      { "key": "key", "value": "x-api-key", "type": "string" },
+      { "key": "value", "value": "{{apiKey}}", "type": "string" },
+      { "key": "in", "value": "header", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "productoId", "value": "1" },
+    { "key": "clienteId", "value": "1" },
+    { "key": "ordenId", "value": "1" },
+    { "key": "nuevoProductoId", "value": "" },
+    { "key": "nuevoClienteId", "value": "" },
+    { "key": "pageSize", "value": "50" },
+    { "key": "pgProductos", "value": "1" },
+    { "key": "pgClientes", "value": "1" },
+    { "key": "pgOrdenes", "value": "1" },
+    { "key": "pgTestimonios", "value": "1" },
+    { "key": "productosAll", "value": "[]" },
+    { "key": "clientesAll", "value": "[]" },
+    { "key": "ordenesAll", "value": "[]" },
+    { "key": "testimoniosAll", "value": "[]" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "GET Health (sin auth)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "health"]
+            },
+            "description": "Endpoint publico de salud. No requiere credenciales."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('status ok', () => pm.expect(pm.response.json().status).to.eql('ok'));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "OAuth",
+      "item": [
+        {
+          "name": "POST Obtener access token (client_credentials)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "grant_type", "value": "client_credentials" },
+                { "key": "client_id", "value": "{{oauthClientId}}" },
+                { "key": "client_secret", "value": "{{oauthClientSecret}}" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/oauth/token",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "oauth", "token"]
+            },
+            "description": "Intercambia client_id + client_secret por un JWT Bearer.\nEl script de tests guarda `access_token` en la variable de environment `{{accessToken}}`."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('access_token presente', () => pm.expect(json.access_token).to.be.a('string'));",
+                  "if (json.access_token) {",
+                  "  pm.environment.set('accessToken', json.access_token);",
+                  "  console.log('accessToken guardado en el environment');",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Productos (via OAuth Bearer)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{accessToken}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/productos?page=1&pageSize=5",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "pageSize", "value": "5" }
+              ]
+            },
+            "description": "Mismo endpoint que en la carpeta Productos pero autenticando con el Bearer OAuth en vez de la API key. Ejecuta antes `POST Obtener access token`."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": ["pm.test('status 200', () => pm.response.to.have.status(200));"]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Productos",
+      "item": [
+        {
+          "name": "GET Listar productos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/productos?page=1&pageSize=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "pageSize", "value": "20" }
+              ]
+            },
+            "description": "Lista paginada. Cada item incluye `aggregateRating` (promedio + numero de resenas)."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('trae items y pageInfo', () => {",
+                  "  const j = pm.response.json();",
+                  "  pm.expect(j.items).to.be.an('array');",
+                  "  pm.expect(j.pageInfo).to.have.property('totalPages');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Producto por id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/productos/{{productoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos", "{{productoId}}"]
+            },
+            "description": "Detalle + `especificaciones` + `resenas` + `aggregateRating`."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": ["pm.test('status 200', () => pm.response.to.have.status(200));"]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST Crear producto (scope write)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigo\": \"PM-{{$timestamp}}\",\n  \"nombre\": \"Producto Postman\",\n  \"descripcion\": \"Creado desde la coleccion de Postman.\",\n  \"categoria\": \"General\",\n  \"subcategoria\": \"Demo\",\n  \"precio\": 199.9,\n  \"stock\": 5\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/productos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos"]
+            },
+            "description": "Crea un producto. Requiere scope `write` (la API key demo y el cliente OAuth demo lo tienen).\nGuarda el id creado en `{{nuevoProductoId}}` para usarlo en PUT/DELETE."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.response.to.have.status(201));",
+                  "const j = pm.response.json();",
+                  "if (j.id) { pm.collectionVariables.set('nuevoProductoId', j.id); console.log('nuevoProductoId =', j.id); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT Actualizar producto (scope write)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"precio\": 149.5,\n  \"stock\": 3\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/productos/{{nuevoProductoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos", "{{nuevoProductoId}}"]
+            },
+            "description": "Actualiza campos parciales del producto creado por el request anterior."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": ["pm.test('status 200', () => pm.response.to.have.status(200));"]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE Eliminar producto (scope write)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/productos/{{nuevoProductoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos", "{{nuevoProductoId}}"]
+            },
+            "description": "Elimina el producto creado en esta corrida."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": ["pm.test('status 200', () => pm.response.to.have.status(200));"]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Clientes",
+      "item": [
+        {
+          "name": "GET Listar clientes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/clientes?page=1&pageSize=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "clientes"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "pageSize", "value": "20" }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": ["pm.test('status 200', () => pm.response.to.have.status(200));"]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Cliente por id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/clientes/{{clienteId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "clientes", "{{clienteId}}"]
+            }
+          }
+        },
+        {
+          "name": "POST Crear cliente (scope write)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dni\": \"PM{{$randomInt}}\",\n  \"nombre\": \"Cliente\",\n  \"apellidos\": \"Postman\",\n  \"email\": \"cliente.postman@example.com\",\n  \"ciudad\": \"Lima\",\n  \"pais\": \"Peru\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/clientes",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "clientes"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.response.to.have.status(201));",
+                  "const j = pm.response.json();",
+                  "if (j.id) pm.collectionVariables.set('nuevoClienteId', j.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT Actualizar cliente (scope write)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ciudad\": \"Arequipa\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/clientes/{{nuevoClienteId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "clientes", "{{nuevoClienteId}}"]
+            }
+          }
+        },
+        {
+          "name": "DELETE Eliminar cliente (scope write)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/clientes/{{nuevoClienteId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "clientes", "{{nuevoClienteId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Ordenes",
+      "item": [
+        {
+          "name": "GET Listar ordenes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/ordenes?page=1&pageSize=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "ordenes"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "pageSize", "value": "10" },
+                { "key": "fecha", "value": "", "disabled": true },
+                { "key": "clienteId", "value": "", "disabled": true }
+              ]
+            },
+            "description": "Lista paginada con `cliente` e `items` embebidos. Filtros opcionales `fecha` (YYYY-MM-DD) y `clienteId`."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": ["pm.test('status 200', () => pm.response.to.have.status(200));"]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Orden por id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/ordenes/{{ordenId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "ordenes", "{{ordenId}}"]
+            },
+            "description": "Detalle de la orden + `resenasEntrega` (comentarios post_compra de esa orden)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Testimonios",
+      "item": [
+        {
+          "name": "GET Listar testimonios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/testimonios?page=1&pageSize=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "testimonios"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "pageSize", "value": "10" }
+              ]
+            },
+            "description": "Comentarios de tipo `cliente_general`."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": ["pm.test('status 200', () => pm.response.to.have.status(200));"]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Comentarios",
+      "item": [
+        {
+          "name": "GET Resenas de producto",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/comentarios?tipo=producto&productoId={{productoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "comentarios"],
+              "query": [
+                { "key": "tipo", "value": "producto" },
+                { "key": "productoId", "value": "{{productoId}}" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Testimonios generales",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/comentarios?tipo=cliente_general",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "comentarios"],
+              "query": [{ "key": "tipo", "value": "cliente_general" }]
+            }
+          }
+        },
+        {
+          "name": "GET Resenas de entrega (post_compra)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/comentarios?tipo=post_compra&ordenId={{ordenId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "comentarios"],
+              "query": [
+                { "key": "tipo", "value": "post_compra" },
+                { "key": "ordenId", "value": "{{ordenId}}" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Listados completos (auto-paginado)",
+      "description": "Cada request recorre TODAS las paginas y acumula los resultados en una variable de coleccion (`productosAll`, `clientesAll`, `ordenesAll`, `testimoniosAll`).\n\nEjecuta desde **Collection Runner** o **newman** (el auto-avance con `setNextRequest` no ocurre en un solo Send; ahi solo trae la pagina actual). Ajusta `pageSize` (variable de coleccion, por defecto 50). Al terminar, el conteo acumulado se valida contra `pageInfo.total` y se ve en la consola.",
+      "item": [
+        {
+          "name": "Todos los productos",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!Number(pm.collectionVariables.get('pgProductos'))) pm.collectionVariables.set('pgProductos', 1);",
+                  "if (Number(pm.collectionVariables.get('pgProductos')) === 1) pm.collectionVariables.set('productosAll', '[]');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const j = pm.response.json();",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const acc = JSON.parse(pm.collectionVariables.get('productosAll') || '[]');",
+                  "acc.push(...j.items);",
+                  "pm.collectionVariables.set('productosAll', JSON.stringify(acc));",
+                  "const { page, totalPages, total } = j.pageInfo;",
+                  "console.log('productos: pagina ' + page + '/' + totalPages + ' -> acumulados ' + acc.length + '/' + total);",
+                  "if (page < totalPages) {",
+                  "  pm.collectionVariables.set('pgProductos', page + 1);",
+                  "  postman.setNextRequest(pm.info.requestName);",
+                  "} else {",
+                  "  pm.collectionVariables.set('pgProductos', 1);",
+                  "  pm.test('acumulados todos (' + acc.length + ')', () => pm.expect(acc.length).to.eql(total));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/productos?page={{pgProductos}}&pageSize={{pageSize}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos"],
+              "query": [
+                { "key": "page", "value": "{{pgProductos}}" },
+                { "key": "pageSize", "value": "{{pageSize}}" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Todos los clientes",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!Number(pm.collectionVariables.get('pgClientes'))) pm.collectionVariables.set('pgClientes', 1);",
+                  "if (Number(pm.collectionVariables.get('pgClientes')) === 1) pm.collectionVariables.set('clientesAll', '[]');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const j = pm.response.json();",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const acc = JSON.parse(pm.collectionVariables.get('clientesAll') || '[]');",
+                  "acc.push(...j.items);",
+                  "pm.collectionVariables.set('clientesAll', JSON.stringify(acc));",
+                  "const { page, totalPages, total } = j.pageInfo;",
+                  "console.log('clientes: pagina ' + page + '/' + totalPages + ' -> acumulados ' + acc.length + '/' + total);",
+                  "if (page < totalPages) {",
+                  "  pm.collectionVariables.set('pgClientes', page + 1);",
+                  "  postman.setNextRequest(pm.info.requestName);",
+                  "} else {",
+                  "  pm.collectionVariables.set('pgClientes', 1);",
+                  "  pm.test('acumulados todos (' + acc.length + ')', () => pm.expect(acc.length).to.eql(total));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/clientes?page={{pgClientes}}&pageSize={{pageSize}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "clientes"],
+              "query": [
+                { "key": "page", "value": "{{pgClientes}}" },
+                { "key": "pageSize", "value": "{{pageSize}}" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Todas las ordenes",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!Number(pm.collectionVariables.get('pgOrdenes'))) pm.collectionVariables.set('pgOrdenes', 1);",
+                  "if (Number(pm.collectionVariables.get('pgOrdenes')) === 1) pm.collectionVariables.set('ordenesAll', '[]');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const j = pm.response.json();",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const acc = JSON.parse(pm.collectionVariables.get('ordenesAll') || '[]');",
+                  "acc.push(...j.items);",
+                  "pm.collectionVariables.set('ordenesAll', JSON.stringify(acc));",
+                  "const { page, totalPages, total } = j.pageInfo;",
+                  "console.log('ordenes: pagina ' + page + '/' + totalPages + ' -> acumulados ' + acc.length + '/' + total);",
+                  "if (page < totalPages) {",
+                  "  pm.collectionVariables.set('pgOrdenes', page + 1);",
+                  "  postman.setNextRequest(pm.info.requestName);",
+                  "} else {",
+                  "  pm.collectionVariables.set('pgOrdenes', 1);",
+                  "  pm.test('acumulados todos (' + acc.length + ')', () => pm.expect(acc.length).to.eql(total));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/ordenes?page={{pgOrdenes}}&pageSize={{pageSize}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "ordenes"],
+              "query": [
+                { "key": "page", "value": "{{pgOrdenes}}" },
+                { "key": "pageSize", "value": "{{pageSize}}" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Todos los testimonios",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!Number(pm.collectionVariables.get('pgTestimonios'))) pm.collectionVariables.set('pgTestimonios', 1);",
+                  "if (Number(pm.collectionVariables.get('pgTestimonios')) === 1) pm.collectionVariables.set('testimoniosAll', '[]');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const j = pm.response.json();",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const acc = JSON.parse(pm.collectionVariables.get('testimoniosAll') || '[]');",
+                  "acc.push(...j.items);",
+                  "pm.collectionVariables.set('testimoniosAll', JSON.stringify(acc));",
+                  "const { page, totalPages, total } = j.pageInfo;",
+                  "console.log('testimonios: pagina ' + page + '/' + totalPages + ' -> acumulados ' + acc.length + '/' + total);",
+                  "if (page < totalPages) {",
+                  "  pm.collectionVariables.set('pgTestimonios', page + 1);",
+                  "  postman.setNextRequest(pm.info.requestName);",
+                  "} else {",
+                  "  pm.collectionVariables.set('pgTestimonios', 1);",
+                  "  pm.test('acumulados todos (' + acc.length + ')', () => pm.expect(acc.length).to.eql(total));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/testimonios?page={{pgTestimonios}}&pageSize={{pageSize}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "testimonios"],
+              "query": [
+                { "key": "page", "value": "{{pgTestimonios}}" },
+                { "key": "pageSize", "value": "{{pageSize}}" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Errores (referencia)",
+      "item": [
+        {
+          "name": "GET Productos SIN auth (401)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/productos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 401', () => pm.response.to.have.status(401));",
+                  "pm.test('error unauthorized', () => pm.expect(pm.response.json().error).to.eql('unauthorized'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Producto inexistente (404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/productos/999999",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos", "999999"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": ["pm.test('status 404', () => pm.response.to.have.status(404));"]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST Token con secret invalido (401 invalid_client)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/x-www-form-urlencoded" }],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "grant_type", "value": "client_credentials" },
+                { "key": "client_id", "value": "{{oauthClientId}}" },
+                { "key": "client_secret", "value": "secreto-malo" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/oauth/token",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "oauth", "token"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 401', () => pm.response.to.have.status(401));",
+                  "pm.test('error invalid_client', () => pm.expect(pm.response.json().error).to.eql('invalid_client'));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

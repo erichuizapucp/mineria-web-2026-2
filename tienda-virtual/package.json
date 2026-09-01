@@ -10,6 +10,9 @@
   },
   "dependencies": {
     "dotenv": "^16.5.0",
+    "graphql": "^16.14.2",
+    "graphql-yoga": "^5.22.0",
+    "jose": "^6.2.10",
     "next": "^16.2.9",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

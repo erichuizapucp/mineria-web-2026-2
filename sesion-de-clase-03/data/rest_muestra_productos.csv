@@ -1,0 +1,6 @@
+id,codigo,nombre,categoria,precio,stock,rating_promedio,total_resenas
+1,PROD-001,Apple iPhone 15 Pro Max 256GB,Smartphones,5599,18,3.5,4
+2,PROD-002,Apple iPhone 15 128GB,Smartphones,3799,25,3.3,4
+3,PROD-003,Samsung Galaxy S24 Ultra 512GB,Smartphones,5299,15,3.3,4
+4,PROD-004,Samsung Galaxy A55 128GB,Smartphones,1399,40,3,4
+5,PROD-005,Xiaomi Redmi Note 13 Pro 256GB,Smartphones,999,45,2.8,4
